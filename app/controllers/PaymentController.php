@@ -16,7 +16,7 @@ class PaymentController extends Controller
         $this->call->library('io');
 
         // PayMongo Test Secret Key (sandbox)
-        $this->secretKey = "sk_test_WVCR39tM4CH7vjysozPQrQYk";
+        $this->secretKey = "PAYMONGO";
     }
 
     // ==========================
