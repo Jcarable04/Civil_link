@@ -1,26 +1,27 @@
 FROM php:8.2-apache
 
-# Install dependencies
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
     unzip \
     git
 
-# Install Composer
+# Install Composer inside container
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 # Install PHP extensions
 RUN docker-php-ext-install pdo pdo_mysql
 
-# Enable mod_rewrite
+# Enable Apache modules
 RUN a2enmod rewrite
 
-# Allow .htaccess overrides
-RUN sed -i '/<Directory \/var\/www\/>/,/<\/Directory>/ s/AllowOverride None/AllowOverride All/' /etc/apache2/apache2.conf
+RUN sed -i '/<Directory \/var\/www\/>/,/<\/Directory>/ s/AllowOverride None/AllowOverride All/' \
+    /etc/apache2/apache2.conf
 
-# Copy app files
+# Copy application files
 COPY . /var/www/html/
 
-# Install PHP dependencies (VERY IMPORTANT)
+# Install PHP dependencies INSIDE container
+WORKDIR /var/www/html
 RUN composer install --no-dev --optimize-autoloader
 
 # Fix permissions
