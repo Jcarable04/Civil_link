@@ -195,6 +195,10 @@ class ResidentController extends Controller
 
         $this->call->view('/resident/dashboard', $data);
     }
+    public function goToAdmin()
+    {
+        redirect('/admin/dashboard');
+    }
 
     public function requestAppointment()
 {

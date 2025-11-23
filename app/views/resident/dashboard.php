@@ -92,12 +92,18 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
             Payment
         </a>
     </nav>
-    
-    <div class="mt-auto pt-4 border-t border-gray-700">
-        <a href="<?= site_url('resident/logout') ?>" class="block px-4 py-2 rounded-lg text-red-400 hover:bg-gray-700 transition duration-150 ease-in-out">
-            Logout
-        </a>
-    </div>
+
+
+    <div class="mt-auto pt-4 border-t border-gray-700 space-y-2">
+    <a href="<?= site_url('gotoAdmin') ?>" 
+       class="block px-4 py-2 rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 transition duration-150 ease-in-out text-center font-medium">
+        Admin Dashboard
+    </a>
+    <a href="<?= site_url('resident/logout') ?>" 
+       class="block px-4 py-2 rounded-lg text-red-400 hover:bg-gray-700 transition duration-150 ease-in-out text-center font-medium">
+        Logout
+    </a>
+</div>
 </div>
 
 <!-- Content -->

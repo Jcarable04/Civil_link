@@ -43,7 +43,7 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
 |
 */
 
-$router->get('/', 'Welcome::index');
+$router->get('/', 'ResidentController::login');
 
 $router->get('admin/login', 'AdminController/login');
 $route['admin/login/submit'] = 'AdminController/loginSubmit';
@@ -63,6 +63,7 @@ $router->post('/admin/create', 'DashboardController@create'); // Handle appointm
 $router->get('/admin/edit/(\d+)', 'DashboardController@edit'); // Show edit form
 $router->post('/admin/update', 'DashboardController@update'); // Handle update
 $router->get('/admin/delete/(\d+)', 'DashboardController@delete'); // Delete appointment
+$router->get('gotoAdmin', 'ResidentController::goToAdmin');
 
 // Appointment Actions (Approve, Reject, etc.)
 $router->get('/admin/approve/(\d+)', 'DashboardController@approve'); // Approve appointment
