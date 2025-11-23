@@ -78,6 +78,10 @@ define('SYSTEM_DIR', ROOT_DIR . $system_path . DIRECTORY_SEPARATOR);
 define('APP_DIR', ROOT_DIR . $application_folder . DIRECTORY_SEPARATOR);
 define('PUBLIC_DIR', $public_folder);
 
+
+require_once ROOT_DIR. 'vendor/autoload.php';
+$dotenv = Dotenv\Dotenv::createImmutable(ROOT_DIR);
+$dotenv->Load();
 /*
  * ------------------------------------------------------
  * Setup done? Then Hurray!
