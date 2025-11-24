@@ -64,7 +64,7 @@ $config['VERSION']                 = '4.4.0';
 | -------------------------------------------------------------------
 | Values: development and production
 */
-$config['ENVIRONMENT']             = 'development';// Suppress deprecated notices in development
+$config['ENVIRONMENT']             = 'production';// environment
 error_reporting(E_ALL & ~E_DEPRECATED);
 
 
