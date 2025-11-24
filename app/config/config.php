@@ -81,8 +81,8 @@ error_reporting(E_ALL & ~E_DEPRECATED);
 | WARNING: You MUST set this value!
 |
 */
-$config['base_url'] 				= 'http://localhost:3000';
-
+//$config['base_url'] 				= 'http://localhost:3000';
+$config['site_url'] 				= 'https://civil-link-1.onrender.com';
 
 /*
 |--------------------------------------------------------------------------
