@@ -67,9 +67,9 @@ class ResidentController extends Controller
                 $this->session->set_userdata('resident_email_temp', $resident['email']);
 
                 // PHPMailer
-                require_once dirname(_DIR_) . '/libraries/PHPMailer/PHPMailer.php';
-                require_once dirname(_DIR_) . '/libraries/PHPMailer/SMTP.php';
-                require_once dirname(_DIR_) . '/libraries/PHPMailer/Exception.php';
+                require_once dirname(__DIR__) . '/libraries/PHPMailer/PHPMailer.php';
+                require_once dirname(__DIR__) . '/libraries/PHPMailer/SMTP.php';
+                require_once dirname(__DIR__) . '/libraries/PHPMailer/Exception.php';
 
                 $mail = new PHPMailer\PHPMailer\PHPMailer(true);
 
