@@ -45,15 +45,13 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
 
 $router->get('/', 'ResidentController::login');
 
-$router->get('admin/login', 'AdminController/login');
-$route['admin/login/submit'] = 'AdminController/loginSubmit';
-$route['admin/dashboard'] = 'AdminController/dashboard';
+
 
 
 // ===================== Appointment Routes =====================
 
 // Dashboard and Main Appointment Views
-
+$router->get('/admin', 'DashboardController@index');
 $router->get('/admin/dashboard', 'DashboardController@index');
 $router->get('/admin/pendingAppointments', 'DashboardController@showPending');
 $router->get('/admin/processingAppointments', 'DashboardController@showProcessing');
@@ -63,19 +61,24 @@ $router->post('/admin/create', 'DashboardController@create'); // Handle appointm
 $router->get('/admin/edit/(\d+)', 'DashboardController@edit'); // Show edit form
 $router->post('/admin/update', 'DashboardController@update'); // Handle update
 $router->get('/admin/delete/(\d+)', 'DashboardController@delete'); // Delete appointment
-$router->get('gotoAdmin', 'ResidentController::goToAdmin');
+$router->get('admin/logout', 'DashboardController::logout');
+
 
 // Appointment Actions (Approve, Reject, etc.)
 $router->get('/admin/approve/(\d+)', 'DashboardController@approve'); // Approve appointment
 $router->get('/admin/reject/(\d+)', 'DashboardController@reject'); // Reject appointment
 $router->get('/admin/process/(\d+)', 'DashboardController@markProcessing'); // Mark as Processing
 $router->get('/admin/complete/(\d+)', 'DashboardController@complete');
+$router->get('/admin/logout', 'DashboardController::logout');
+
 
 
 // Filtered Views for Each Status (Optional, for different cards or sections)
 $router->get('/admin/appointments/pending', 'DashboardController@showPending'); // Pending list
 $router->get('/admin/appointments/processing', 'DashboardController@showProcessing'); // Processing list
 $router->get('/admin/appointments/done', 'DashboardController@showCompleted'); // Completed list
+$router->get('/resident/adminAccess', 'ResidentController::adminAccess');
+$router->post('/resident/adminAccess', 'ResidentController::adminAccess');
 
 
 // ===================== Record Routes =====================
@@ -98,6 +101,7 @@ $router->get('resident/logout', 'ResidentController::logout');
 
 $router->match('resident/requestAppointment', 'ResidentController::requestAppointment', ['GET', 'POST']);
 $router->get('resident/status', 'ResidentStatusController@status');
+$router->get('gotoAdmin', 'ResidentController::goToAdmin');
 
 // Payment routes
 $router->get('/resident/payment', 'PaymentController@pay');

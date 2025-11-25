@@ -258,4 +258,26 @@ class DashboardController
             echo "Recent records view not found: " . $viewPath;
         }
     }
+    public function logout()
+    {
+        // Start session if not started
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        // Clear all session variables
+        $_SESSION = [];
+
+        // Destroy the session
+        session_destroy();
+
+        // Clear relevant cookies if any
+        if (isset($_COOKIE['LLSession'])) {
+            setcookie('LLSession', '', time() - 3600, '/');
+        }
+
+        // Redirect to login page
+        header("Location: /resident/login"); // change this to your actual login route
+        exit;
+    }
 }
