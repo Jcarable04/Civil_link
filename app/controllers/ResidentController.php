@@ -52,62 +52,66 @@ class ResidentController extends Controller
     // LOGIN with OTP
     // ==========================
     public function login()
-    {
-        if ($this->io->method() === 'post') {
-            $email    = $this->io->post('email');
-            $password = $this->io->post('password');
+{
+    if ($this->io->method() === 'post') {
+        $email    = $this->io->post('email');
+        $password = $this->io->post('password');
 
-            $resident = $this->ResidentModel->getResidentByEmail($email);
+        $resident = $this->ResidentModel->getResidentByEmail($email);
 
-            if ($resident && isset($resident['password']) && password_verify($password, $resident['password'])) {
-                $otp = rand(100000, 999999);
+        if ($resident && isset($resident['password']) && password_verify($password, $resident['password'])) {
+            $otp = rand(100000, 999999);
 
-                $this->session->set_userdata('otp_code', $otp);
-                $this->session->set_userdata('resident_id_temp', $resident['id']);
-                $this->session->set_userdata('resident_email_temp', $resident['email']);
+            $this->session->set_userdata('otp_code', $otp);
+            $this->session->set_userdata('resident_id_temp', $resident['id']);
+            $this->session->set_userdata('resident_email_temp', $resident['email']);
 
-                // PHPMailer
-                require_once dirname(__DIR__) . '/libraries/PHPMailer/PHPMailer.php';
-                require_once dirname(__DIR__) . '/libraries/PHPMailer/SMTP.php';
-                require_once dirname(__DIR__) . '/libraries/PHPMailer/Exception.php';
+            // -------------------------
+            // Brevo (Sendinblue) API
+            // -------------------------
+            $apiKey = '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';
+            $url = "https://api.brevo.com/v3/smtp/email";
 
-                $mail = new PHPMailer\PHPMailer\PHPMailer(true);
-                try {
-                    $mail->isSMTP();
-                    $mail->Host       = 'smtp.gmail.com';
-                    $mail->SMTPAuth   = true;
-                    $mail->Username   = 'jeffersoncarable8@gmail.com';
-                    $mail->Password   = 'etvprhojpxroxqnr';
-                    $mail->SMTPSecure = 'tls';
-                    $mail->Port       = 587;
+            $data = [
+                "sender" => ["name" => "Resident System", "email" => "no-reply@example.com"],
+                "to" => [["email" => $resident['email'], "name" => $resident['full_name']]],
+                "subject" => "Your Login OTP Code",
+                "htmlContent" => "<p>Hello {$resident['full_name']},</p>
+                                  <p>Your OTP code is: <b>{$otp}</b></p>
+                                  <p>Enter this code to complete login.</p>"
+            ];
 
-                    $mail->setFrom('no-reply@example.com', 'Resident System');
-                    $mail->addAddress($resident['email'], $resident['full_name']);
+            $ch = curl_init($url);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, [
+                "accept: application/json",
+                "api-key: $apiKey",
+                "content-type: application/json"
+            ]);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
 
-                    $mail->isHTML(false);
-                    $mail->Subject = 'Your Login OTP Code';
-                    $mail->Body    = "Hello {$resident['full_name']},\n\nYour OTP code is: {$otp}\n\nEnter this code to complete login.";
+            $response = curl_exec($ch);
+            $err = curl_error($ch);
+            curl_close($ch);
 
-                    $mail->send();
-
-                    // After login, redirect to OTP
-redirect(site_url('resident/verifyOtp'));
-
-
-                    exit;
-                } catch (PHPMailer\PHPMailer\Exception $e) {
-                    $this->call->view('resident/login', [
-                        'error' => "❌ OTP could not be sent. Mailer Error: {$mail->ErrorInfo}"
-                    ]);
-                    return;
-                }
+            if ($err) {
+                $this->call->view('resident/login', [
+                    'error' => "❌ OTP could not be sent. API Error: $err"
+                ]);
+                return;
             }
 
-            $this->call->view('/resident/login', ['error' => "❌ Invalid email or password!"]);
-        } else {
-            $this->call->view('/resident/login');
+            // After sending OTP, redirect to verifyOtp
+            redirect(site_url('resident/verifyOtp'));
+            exit;
         }
+
+        $this->call->view('/resident/login', ['error' => "❌ Invalid email or password!"]);
+    } else {
+        $this->call->view('/resident/login');
     }
+}
 
     public function verifyOtp()
 {
