@@ -620,12 +620,12 @@ h1 {
 
         <!-- ORIGINAL FORM STRUCTURE - KEPT INTACT -->
         <form method="POST" action="<?= $baseUrl ?>/index.php/resident/verifyOtp">
-            <div class="form-group">
-                <label for="otp">Verification Code</label>
-                <input type="text" class="otp-input" id="otp" name="otp" placeholder="000000" maxlength="6" pattern="[0-9]{6}" required autocomplete="one-time-code">
-            </div>
-            <button type="submit" class="btn-primary">Verify Code</button>
-        </form>
+    <div class="form-group">
+        <label for="otp">Verification Code</label>
+        <input type="text" class="otp-input" id="otp" name="otp" placeholder="000000" maxlength="6" pattern="[0-9]{6}" required autocomplete="one-time-code">
+    </div>
+    <button type="submit" class="btn-primary">Verify Code</button>
+</form>
 
         <div class="footer-section">
             <div class="helper-text">
