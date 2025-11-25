@@ -91,7 +91,7 @@ class ResidentController extends Controller
                     $mail->send();
 
                     // After login, redirect to OTP
-redirect(site_url('resident/verifyOtp');
+                redirect('resident/verifyOtp');
 
                     exit;
                 } catch (PHPMailer\PHPMailer\Exception $e) {
